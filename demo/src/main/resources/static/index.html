@@ -1,0 +1,65 @@
+
+<!doctype html>
+<html lang="ja" dir="ltr">
+<head>
+	<script>
+		const data = {
+				value: {
+					item: "ITEM!!!"
+				}
+		};
+	
+		const onNoFileClick = async () => {
+			const formData = new FormData();
+			formData.append('json', JSON.stringify(data));
+			
+			const result = await fetch('practice', {
+					method: 'POST',
+				    body: formData
+				}),
+				json = await result.json();
+			
+			const dom = document.getElementById('result');
+			dom.innerHTML = JSON.stringify(json);
+		};
+	
+		const onFileClick = async () => {
+			const formData = new FormData();
+			formData.append('json', JSON.stringify(data));
+			
+			const file1 = document.getElementById('file1');
+			for (const file of file1.files) {
+				formData.append('file1', file);
+			}
+
+			const file2 = document.getElementById('file2');
+			for (const file of file2.files) {
+				formData.append('file2', file);
+			}
+			
+			const result = await fetch('practice', {
+					method: 'POST',
+					body: formData
+				}),
+				json = await result.json();
+			
+			const dom = document.getElementById('result');
+			dom.innerHTML = JSON.stringify(json);
+		};
+	
+	</script>
+
+
+</head>
+<body>
+<div>
+	<div><button onclick="onNoFileClick()">ファイルなし</button></div>
+	<div>
+		<input id="file1" type="file" multiple/>
+		<input id="file2" type="file" multiple/>
+		<button onclick="onFileClick()">ファイルあり</button>
+	</div>
+</div>
+<div id="result"></div>
+</body>
+</html>
